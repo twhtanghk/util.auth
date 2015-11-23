@@ -25,13 +25,13 @@ Include other required packages
 
 Include sails.io.js and disable it if only rest request is required and web socket connection is not necessary
 ```
-	<script type="text/javascript" src="../bower_components/sails.io.js/dist/sails.io.js"></script>
+	<script type="text/javascript" src="lib/sails.io.js/dist/sails.io.js"></script>
 	<script type="text/javascript">
 		io.sails.autoConnect = false;
 	</script>
 ```
 
-Run login via the pre-defined oauth2 server settings once 401 Unauthorized Access is reported 
+Run login via the pre-defined oauth2 server settings once 401 Unauthorized Access is received 
 ```
 angular.module 'app', ['util.auth', ...]
 	.run (authService) ->
@@ -39,6 +39,9 @@ angular.module 'app', ['util.auth', ...]
 ```
 
 ## Demo
+Open browser to visit https://mob.myvnc.com/util.auth.
+
+Deploy to local testing server
 ```
   npm install && bower install
   node_modules/.bin/gulp

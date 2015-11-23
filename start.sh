@@ -3,4 +3,4 @@
 root=~/prod/util.auth
 http=node_modules/.bin/http-server
 
-forever start --workingDir ${root} ${http} ./test -p 8014
+forever start --workingDir ${root} -l util.auth.log ${http} ./test -p 8014
