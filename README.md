@@ -45,6 +45,6 @@ Deploy to local testing server
 ```
   npm install && bower install
   node_modules/.bin/gulp
-  node_modules/.bin/http-server
+  node_modules/.bin/http-server ./test -p 8080
 ```
-open browser to visit http://localhost:8080/test/ or https://mob.myvnc.com/util.auth
+open browser to visit http://localhost:8080/test/
