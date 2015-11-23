@@ -1,6 +1,5 @@
 # util.auth
-util.auth is an angular module for application to login oauth2 server
-on pop-up iframe. 
+util.auth is an angular module for application to verify user login via pre-defined oauth2 server on pop-up iframe. 
 
 ## Usage
 Install the package
