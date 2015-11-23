@@ -7,12 +7,9 @@ gutil = require 'gulp-util'
 gulp.task 'default', ['test']
 
 gulp.task 'coffee', ->
-  browserify(entries: ['./index.coffee'])
-    .transform('coffeeify')
-    .transform('debowerify')
-    .bundle()
-    .pipe(source('index.js'))
-    .pipe(gulp.dest('./'))
+	gulp.src('./index.coffee')
+	  	.pipe(coffee({bare: true}).on('error', gutil.log))
+	    .pipe(gulp.dest('./'))
 
 gulp.task 'test', ['coffee'], ->
   browserify(entries: ['./test/index.coffee'])

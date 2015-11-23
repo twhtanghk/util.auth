@@ -14,7 +14,7 @@ angular.module 'app', ['util.auth', 'starter.model']
 		_.extend $scope,
 			collection: users
 			loadMore: ->
-				collection.$fetch()
+				users.$fetch(params: page: (users.state.skip / users.state.limit + 1))
 					.then ->
 						$scope.$broadcast('scroll.infiniteScrollComplete')
 					.catch alert

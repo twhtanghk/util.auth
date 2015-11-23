@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="app">
 	<head>
-		<link href="../bower_components/ionic/release/css/ionic.css" rel="stylesheet">
+		<link href="lib/ionic/release/css/ionic.css" rel="stylesheet">
 		<style type="text/css">
 			.scroll {
 				height: 100%;
@@ -22,19 +22,23 @@
 			}
 		</style>
 		<script type="text/javascript" src="./index.js"></script>
-		<script type="text/javascript" src="../bower_components/sails.io.js/dist/sails.io.js"></script>
+		<script type="text/javascript" src="lib/sails.io.js/dist/sails.io.js"></script>
 		<script type="text/javascript">
 			io.sails.autoConnect = false;
 		</script>
 	</head>
 	<body>
-		<ion-list ng-controller='UsersCtrl'>
-			<ion-item class="item-avatar"
-				ng-class="model.online ? '' : 'offline'" 
-				ng-repeat="model in collection.models">
-				<i class="icon ion-android-person"></i>
-				<h2>{{model.username}}</h2>
-			</ion-item>
-		</ion-list>
+		<ion-content ng-controller="UsersCtrl">
+			<ion-list>
+				<ion-item class="item-avatar"
+					ng-class="model.online ? '' : 'offline'" 
+					ng-repeat="model in collection.models">
+					<i class="icon ion-android-person"></i>
+					<h2>{{model.username}}</h2>
+				</ion-item>
+			</ion-list>
+			<ion-infinite-scroll ng-if="collection.state.skip < collection.state.count" on-infinite="loadMore()">
+			</ion-infinite-scroll>
+		</ion-content>
 	</body>
 </html>

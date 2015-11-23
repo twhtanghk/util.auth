@@ -6,5 +6,5 @@ module.exports =
 		opts:
 			authUrl: "https://mob.myvnc.com/org/oauth2/authorize/"
 			response_type:	"token"
-			scope:			"https://mob.myvnc.com/org/users https://mob.myvnc.com/mobile"
+			scope:			"https://mob.myvnc.com/org/users"
 			client_id:		'util.auth'
