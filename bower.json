@@ -1,0 +1,25 @@
+{
+  "name": "util.auth",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Tommy Tang <twhtanghk@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/twhtanghk/util.auth",
+  "moduleType": [
+    "amd"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "PageableAR": "*",
+    "ionic": "~1.1.1",
+    "sails-auth": "*"
+  }
+}
