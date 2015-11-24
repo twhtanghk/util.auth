@@ -21,14 +21,14 @@
 			    border-radius: 4px; 
 			}
 		</style>
-		<script type="text/javascript" src="./index.js"></script>
+		<script type="text/javascript" src="./rest.js"></script>
 		<script type="text/javascript" src="lib/sails.io.js/dist/sails.io.js"></script>
 		<script type="text/javascript">
 			io.sails.autoConnect = false;
 		</script>
 	</head>
 	<body>
-		<ion-content ng-controller="UsersCtrl">
+		<ion-content ng-controller='UsersCtrl'>
 			<ion-list>
 				<ion-item class="item-avatar"
 					ng-class="model.online ? '' : 'offline'" 

@@ -2,9 +2,9 @@
 util.auth is an angular module for application to verify user login via pre-defined oauth2 server on pop-up iframe. 
 
 ## Usage
-Install the package
+Install the required packages
 ```
-npm install util.auth
+npm install util.auth lodash sails.io.js
 ```
 
 Define oauth2 server settings 
@@ -17,17 +17,30 @@ Define oauth2 server settings
 			client_id:		'util.auth'
 ```
 
-Include other required packages
+Include other required packages as shown in test/io.coffee or test/rest.coffee
 ```
 	require 'util.auth'
 	_ = require 'lodash'
 ```
 
-Include sails.io.js and disable it if only rest request is required and web socket connection is not necessary
+Include sails.io.js, disable autoConnect, and configure sailsBackend to connect the web socket server if necessary
+
+Configuration for rest request only
 ```
 	<script type="text/javascript" src="lib/sails.io.js/dist/sails.io.js"></script>
 	<script type="text/javascript">
 		io.sails.autoConnect = false;
+	</script>
+```
+
+Configuration for socket io and rest request
+```
+	<script type="text/javascript" src="lib/sails.io.js/dist/sails.io.js"></script>
+	<script type="text/javascript">
+		io.sails.autoConnect = false;
+		io.sails.url = 'https://mob.myvnc.com'
+		io.sails.path = "/im.app/socket.io"
+		io.sails.useCORSRouteToGetCookie = false
 	</script>
 ```
 
@@ -39,7 +52,7 @@ angular.module 'app', ['util.auth', ...]
 ```
 
 ## Demo
-Open browser to visit https://mob.myvnc.com/util.auth.
+Open browser to visit https://mob.myvnc.com/util.auth/io.html or https://mob.myvnc.com/util.auth/rest.html.
 
 Deploy to local testing server
 ```
@@ -47,4 +60,4 @@ Deploy to local testing server
   node_modules/.bin/gulp
   node_modules/.bin/http-server ./test -p 8080
 ```
-open browser to visit http://localhost:8080/test/
+open browser to visit http://localhost:8080/test/io.html or http://localhost:8080/test/rest.html

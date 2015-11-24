@@ -5,7 +5,7 @@
   "authors": [
     "Tommy Tang <twhtanghk@gmail.com>"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://github.com/twhtanghk/util.auth",
   "moduleType": [
     "amd"
@@ -15,11 +15,13 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "test/lib"
   ],
   "devDependencies": {
     "PageableAR": "*",
     "ionic": "~1.1.1",
-    "sails-auth": "*"
+    "sails-auth": "*",
+    "sails.io.js": "git://github.com/twhtanghk/sails.io.js.git#ba560f119786d13efee1684418c9764e374fa45f"
   }
 }

@@ -1,10 +1,17 @@
 module.exports =
 	server:
-		app:
+		rest:
 			urlRoot:	'https://mob.myvnc.com/org'
+		io:
+			urlRoot:	'https://mob.myvnc.com/im.app'
 	oauth2:
-		opts:
+		rest:
 			authUrl: "https://mob.myvnc.com/org/oauth2/authorize/"
 			response_type:	"token"
 			scope:			"https://mob.myvnc.com/org/users"
+			client_id:		'util.auth'
+		io:
+			authUrl: "https://mob.myvnc.com/org/oauth2/authorize/"
+			response_type:	"token"
+			scope:			"https://mob.myvnc.com/org/users https://mob.myvnc.com/mobile"
 			client_id:		'util.auth'
