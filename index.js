@@ -6,7 +6,15 @@ $.deparam = require('jquery-deparam');
 
 _ = require('lodash');
 
-require('ionic/release/js/ionic.bundle.js');
+require('angular');
+
+require('angular-animate');
+
+require('angular-sanitize');
+
+require('angular-ui-router');
+
+require('ionic');
 
 require('sails-auth');
 

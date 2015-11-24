@@ -22,6 +22,10 @@
     "PageableAR": "*",
     "ionic": "~1.1.1",
     "sails-auth": "*",
-    "sails.io.js": "git://github.com/twhtanghk/sails.io.js.git#ba560f119786d13efee1684418c9764e374fa45f"
+    "sails.io.js": "git://github.com/twhtanghk/sails.io.js.git#ba560f119786d13efee1684418c9764e374fa45f",
+    "angular": "~1.4.8",
+    "angular-animate": "~1.4.8",
+    "angular-sanitize": "~1.4.8",
+    "angular-ui-router": "~0.2.15"
   }
 }

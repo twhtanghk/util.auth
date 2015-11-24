@@ -4,7 +4,7 @@ util.auth is an angular module for application to verify user login via pre-defi
 ## Usage
 Install the required packages
 ```
-npm install util.auth lodash sails.io.js
+bower install util.auth lodash sails.io.js angular angular-animate angular-sanitize angular-ui-router ionic sails-auth
 ```
 
 Define oauth2 server settings 
@@ -20,7 +20,6 @@ Define oauth2 server settings
 Include other required packages as shown in test/io.coffee or test/rest.coffee
 ```
 	require 'util.auth'
-	_ = require 'lodash'
 ```
 
 Include sails.io.js, disable autoConnect, and configure sailsBackend to connect the web socket server if necessary
