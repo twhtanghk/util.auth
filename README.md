@@ -9,37 +9,30 @@ bower install util.auth lodash sails.io.js angular angular-animate angular-sanit
 
 Define oauth2 server settings 
 ```
-	oauth2:
-		opts:
-			authUrl: "https://mob.myvnc.com/org/oauth2/authorize/"
-			response_type:	"token"
-			scope:			"https://mob.myvnc.com/org/users"
-			client_id:		'util.auth'
+	io.sails.url = 'https://mob.myvnc.com'
+	io.sails.path = "/im.app/socket.io"
+	io.sails.useCORSRouteToGetCookie = false
+		
+	module.exports = 
+		oauth2:
+			opts:
+				authUrl: "https://mob.myvnc.com/org/oauth2/authorize/"
+				response_type:	"token"
+				scope:			"https://mob.myvnc.com/org/users"
+				client_id:		'util.auth'
 ```
 
-Include other required packages as shown in test/io.coffee or test/rest.coffee
+Include required packages as shown in test/io.coffee or test/rest.coffee
 ```
 	require 'util.auth'
 ```
 
-Include sails.io.js, disable autoConnect, and configure sailsBackend to connect the web socket server if necessary
+Include sails.io.js and disable autoConnect
 
-Configuration for rest request only
 ```
 	<script type="text/javascript" src="lib/sails.io.js/dist/sails.io.js"></script>
 	<script type="text/javascript">
 		io.sails.autoConnect = false;
-	</script>
-```
-
-Configuration for socket io and rest request
-```
-	<script type="text/javascript" src="lib/sails.io.js/dist/sails.io.js"></script>
-	<script type="text/javascript">
-		io.sails.autoConnect = false;
-		io.sails.url = 'https://mob.myvnc.com'
-		io.sails.path = "/im.app/socket.io"
-		io.sails.useCORSRouteToGetCookie = false
 	</script>
 ```
 
