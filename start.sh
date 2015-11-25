@@ -1,6 +1,6 @@
 #!/bin/sh
 
 root=~/prod/util.auth
-http=node_modules/.bin/http-server
+cmd=node_modules/.bin/http-server
 
-forever start --workingDir ${root} -l util.auth.log ${http} ./test -p 8014
+forever start --workingDir ${root} -a -l util.auth.log -c ${cmd} ./test -p 8014

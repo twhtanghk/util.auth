@@ -20,7 +20,7 @@ require('sails-auth');
 
 angular.module('util.auth', ['ionic', 'http-auth-interceptor']).config(function($provide) {
   return $provide.decorator('authService', function($delegate, $http, $sailsSocket, $rootScope, $ionicModal) {
-    var check, loginConfirmed, prompt, url;
+    var check, isUnderLogin, loginConfirmed, prompt, url;
     loginConfirmed = $delegate.loginConfirmed;
     $delegate.loginConfirmed = function(data, configUpdater) {
       if (data != null) {
@@ -32,14 +32,18 @@ angular.module('util.auth', ['ionic', 'http-auth-interceptor']).config(function(
         });
       }
     };
+    isUnderLogin = false;
     url = function(opts) {
       return opts.authUrl + "?" + ($.param(_.pick(opts, 'client_id', 'scope', 'response_type')));
     };
     prompt = function(opts) {
       var template;
-      template = "<ion-modal-view>\n	<ion-content>\n		<iframe src='" + (url(opts)) + "'>\n		</iframe>\n	</ion-content>\n</ion-modal-view>";
-      $rootScope.loginModal = $ionicModal.fromTemplate(template);
-      return $rootScope.loginModal.show();
+      if (!isUnderLogin) {
+        isUnderLogin = true;
+        template = "<ion-modal-view>\n	<ion-content>\n		<iframe src='" + (url(opts)) + "'>\n		</iframe>\n	</ion-content>\n</ion-modal-view>";
+        $rootScope.loginModal = $ionicModal.fromTemplate(template);
+        return $rootScope.loginModal.show();
+      }
     };
     check = function(url, close) {
       var data, err, path;
@@ -65,8 +69,14 @@ angular.module('util.auth', ['ionic', 'http-auth-interceptor']).config(function(
       $rootScope.$on('event:auth-forbidden', function() {
         return prompt(opts);
       });
-      return $rootScope.$on('event:auth-loginRequired', function() {
+      $rootScope.$on('event:auth-loginRequired', function() {
         return prompt(opts);
+      });
+      $rootScope.$on('event:auth-loginConfirmed', function() {
+        return isUnderLogin = false;
+      });
+      return $rootScope.$on('event:auth-loginCancelled', function() {
+        return isUnderLogin = false;
       });
     };
     return $delegate;

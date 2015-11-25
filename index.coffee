@@ -22,20 +22,24 @@ angular.module 'util.auth', ['ionic', 'http-auth-interceptor']
 						config.headers = _.omit config.headers, 'Authorization'
 						return config
 				
+			isUnderLogin = false
+			
 			url = (opts) ->
 				"#{opts.authUrl}?#{$.param(_.pick(opts, 'client_id', 'scope', 'response_type'))}"
 				
-			prompt = (opts) -> 
-				template = """
-					<ion-modal-view>
-						<ion-content>
-							<iframe src='#{url(opts)}'>
-							</iframe>
-						</ion-content>
-					</ion-modal-view>
-				"""
-				$rootScope.loginModal = $ionicModal.fromTemplate template
-				$rootScope.loginModal.show() 
+			prompt = (opts) ->
+				if not isUnderLogin
+					isUnderLogin = true 
+					template = """
+						<ion-modal-view>
+							<ion-content>
+								<iframe src='#{url(opts)}'>
+								</iframe>
+							</ion-content>
+						</ion-modal-view>
+					"""
+					$rootScope.loginModal = $ionicModal.fromTemplate template
+					$rootScope.loginModal.show() 
 			
 			check = (url, close) ->
 				if url.match(/error|access_token/)
@@ -59,5 +63,11 @@ angular.module 'util.auth', ['ionic', 'http-auth-interceptor']
 						
 				$rootScope.$on 'event:auth-loginRequired', ->
 					prompt(opts)
+					
+				$rootScope.$on 'event:auth-loginConfirmed', ->
+					isUnderLogin = false
+					
+				$rootScope.$on 'event:auth-loginCancelled', ->
+					isUnderLogin = false
 				
 			return $delegate
