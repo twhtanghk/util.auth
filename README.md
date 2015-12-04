@@ -48,6 +48,8 @@ Open browser to visit https://mob.myvnc.com/util.auth/io.html or https://mob.myv
 
 Deploy to local testing server
 ```
+  git clone https://github.com/twhtanghk/util.auth.git
+  cd util.auth
   npm install && bower install
   node_modules/.bin/gulp
   node_modules/.bin/http-server ./test -p 8080
