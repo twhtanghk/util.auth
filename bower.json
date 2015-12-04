@@ -1,6 +1,7 @@
 {
   "name": "util.auth",
   "description": "",
+  "version": "0.0.1",
   "main": "index.js",
   "authors": [
     "Tommy Tang <twhtanghk@gmail.com>"
