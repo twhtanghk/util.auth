@@ -20,7 +20,7 @@ require('sails-auth');
 
 angular.module('util.auth', ['ionic', 'http-auth-interceptor']).config(function($provide) {
   return $provide.decorator('authService', function($delegate, $http, $sailsSocket, $rootScope, $ionicModal) {
-    var check, isUnderLogin, loginConfirmed, prompt, url;
+    var check, loginConfirmed, url;
     loginConfirmed = $delegate.loginConfirmed;
     $delegate.loginConfirmed = function(data, configUpdater) {
       if (data != null) {
@@ -32,45 +32,50 @@ angular.module('util.auth', ['ionic', 'http-auth-interceptor']).config(function(
         });
       }
     };
-    isUnderLogin = false;
     url = function(opts) {
       return opts.authUrl + "?" + ($.param(_.pick(opts, 'client_id', 'scope', 'response_type')));
     };
-    prompt = function(opts) {
+    $delegate.prompt = function(opts) {
       var template;
-      if (!isUnderLogin) {
-        isUnderLogin = true;
-        template = "<ion-modal-view>\n	<ion-content>\n		<iframe src='" + (url(opts)) + "'>\n		</iframe>\n	</ion-content>\n</ion-modal-view>";
-        $rootScope.loginModal = $ionicModal.fromTemplate(template);
-        return $rootScope.loginModal.show();
-      }
+      template = "<ion-modal-view>\n	<ion-content>\n		<iframe src='" + (url(opts)) + "'>\n		</iframe>\n	</ion-content>\n</ion-modal-view>";
+      $rootScope.loginModal = $ionicModal.fromTemplate(template);
+      return $rootScope.loginModal.show();
     };
-    check = function(url, close) {
+    $delegate.close = function() {
+      return $rootScope.loginModal.remove();
+    };
+    check = function(url) {
       var data, err, path;
       if (url.match(/error|access_token/)) {
         path = new URL(url);
         data = $.deparam(/(?:[#\/]*)(.*)/.exec(path.hash)[1]);
         err = $.deparam(/\?*(.*)/.exec(path.search)[1]);
         if (err.error) {
-          close();
+          $delegate.close();
           return $delegate.loginCancelled(null, err.error);
         } else {
-          close();
+          $delegate.close();
           return $delegate.loginConfirmed(data);
         }
       }
     };
     window.addEventListener('message', function(event) {
-      return check(event.data, function() {
-        return $rootScope.loginModal.remove();
-      });
+      return check(event.data);
     });
     $delegate.login = function(opts) {
+      var isUnderLogin;
+      isUnderLogin = false;
       $rootScope.$on('event:auth-forbidden', function() {
-        return prompt(opts);
+        if (!isUnderLogin) {
+          isUnderLogin = true;
+          return $delegate.prompt(opts);
+        }
       });
       $rootScope.$on('event:auth-loginRequired', function() {
-        return prompt(opts);
+        if (!isUnderLogin) {
+          isUnderLogin = true;
+          return $delegate.prompt(opts);
+        }
       });
       $rootScope.$on('event:auth-loginConfirmed', function() {
         return isUnderLogin = false;

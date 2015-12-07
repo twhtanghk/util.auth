@@ -22,14 +22,10 @@ angular.module 'util.auth', ['ionic', 'http-auth-interceptor']
 						config.headers = _.omit config.headers, 'Authorization'
 						return config
 				
-			isUnderLogin = false
-			
 			url = (opts) ->
 				"#{opts.authUrl}?#{$.param(_.pick(opts, 'client_id', 'scope', 'response_type'))}"
 				
-			prompt = (opts) ->
-				if not isUnderLogin
-					isUnderLogin = true 
+			$delegate.prompt = (opts) ->
 					template = """
 						<ion-modal-view>
 							<ion-content>
@@ -41,28 +37,36 @@ angular.module 'util.auth', ['ionic', 'http-auth-interceptor']
 					$rootScope.loginModal = $ionicModal.fromTemplate template
 					$rootScope.loginModal.show() 
 			
-			check = (url, close) ->
+			$delegate.close = ->
+				$rootScope.loginModal.remove()
+				
+			check = (url) ->
 				if url.match(/error|access_token/)
 					path = new URL(url)
 					data = $.deparam /(?:[#\/]*)(.*)/.exec(path.hash)[1]	# remove leading / or #
 					err = $.deparam /\?*(.*)/.exec(path.search)[1]			# remove leading ?
 					if err.error
-						close()
+						$delegate.close()
 						$delegate.loginCancelled null, err.error
 					else
-						close()
+						$delegate.close()
 						$delegate.loginConfirmed data
 						
 			window.addEventListener 'message', (event) ->
-				check event.data, ->
-					$rootScope.loginModal.remove()
+				check event.data
 			
 			$delegate.login = (opts) ->
+				isUnderLogin = false
+			
 				$rootScope.$on 'event:auth-forbidden', ->
-					prompt(opts)
+					if not isUnderLogin
+						isUnderLogin = true 
+						$delegate.prompt(opts)
 						
 				$rootScope.$on 'event:auth-loginRequired', ->
-					prompt(opts)
+					if not isUnderLogin
+						isUnderLogin = true 
+						$delegate.prompt(opts)
 					
 				$rootScope.$on 'event:auth-loginConfirmed', ->
 					isUnderLogin = false
