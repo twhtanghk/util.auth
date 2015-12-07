@@ -7,10 +7,15 @@ Install the required packages
 bower install util.auth lodash sails.io.js angular angular-animate angular-sanitize angular-ui-router ionic sails-auth
 ```
 
+Create oauth2 client with the following callback url and copy test/callback.html to the server corresponding location. 
+```
+https://myserver.com/path/callback.html
+```
+  
 Define oauth2 server settings 
 ```
-	io.sails.url = 'https://mob.myvnc.com'
-	io.sails.path = "/im.app/socket.io"
+	io.sails.url = 'https://myserver.com'
+	io.sails.path = "/path/socket.io"
 	io.sails.useCORSRouteToGetCookie = false
 		
 	module.exports = 

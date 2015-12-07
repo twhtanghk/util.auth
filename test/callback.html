@@ -2,8 +2,7 @@
 <html>
 	<head>
 		<script type="text/javascript">
-			origin = location.origin
-			window.parent.postMessage(location.href, origin)
+			window.parent.postMessage(location.href, window.parent.location.origin)
 		</script>
 	</head>
 	<body>
