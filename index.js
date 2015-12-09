@@ -20,7 +20,7 @@ require('sails-auth');
 
 angular.module('util.auth', ['ionic', 'http-auth-interceptor']).config(function($provide) {
   return $provide.decorator('authService', function($delegate, $http, $sailsSocket, $rootScope, $ionicModal) {
-    var check, loginConfirmed, url;
+    var loginConfirmed;
     loginConfirmed = $delegate.loginConfirmed;
     $delegate.loginConfirmed = function(data, configUpdater) {
       if (data != null) {
@@ -32,19 +32,16 @@ angular.module('util.auth', ['ionic', 'http-auth-interceptor']).config(function(
         });
       }
     };
-    url = function(opts) {
-      return opts.authUrl + "?" + ($.param(_.pick(opts, 'client_id', 'scope', 'response_type')));
-    };
-    $delegate.prompt = function(opts) {
+    $delegate.prompt = function(url) {
       var template;
-      template = "<ion-modal-view>\n	<ion-content>\n		<iframe src='" + (url(opts)) + "'>\n		</iframe>\n	</ion-content>\n</ion-modal-view>";
+      template = "<ion-modal-view>\n	<ion-content>\n		<iframe src='" + url + "'>\n		</iframe>\n	</ion-content>\n</ion-modal-view>";
       $rootScope.loginModal = $ionicModal.fromTemplate(template);
       return $rootScope.loginModal.show();
     };
     $delegate.close = function() {
       return $rootScope.loginModal.remove();
     };
-    check = function(url) {
+    $delegate.check = function(url) {
       var data, err, path;
       if (url.match(/error|access_token/)) {
         path = new URL(url);
@@ -60,21 +57,24 @@ angular.module('util.auth', ['ionic', 'http-auth-interceptor']).config(function(
       }
     };
     window.addEventListener('message', function(event) {
-      return check(event.data);
+      return $delegate.check(event.data);
     });
     $delegate.login = function(opts) {
-      var isUnderLogin;
+      var isUnderLogin, url;
       isUnderLogin = false;
+      url = function(opts) {
+        return opts.authUrl + "?" + ($.param(_.pick(opts, 'client_id', 'scope', 'response_type')));
+      };
       $rootScope.$on('event:auth-forbidden', function() {
         if (!isUnderLogin) {
           isUnderLogin = true;
-          return $delegate.prompt(opts);
+          return $delegate.prompt(url(opts));
         }
       });
       $rootScope.$on('event:auth-loginRequired', function() {
         if (!isUnderLogin) {
           isUnderLogin = true;
-          return $delegate.prompt(opts);
+          return $delegate.prompt(url(opts));
         }
       });
       $rootScope.$on('event:auth-loginConfirmed', function() {

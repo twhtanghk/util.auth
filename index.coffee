@@ -22,25 +22,25 @@ angular.module 'util.auth', ['ionic', 'http-auth-interceptor']
 						config.headers = _.omit config.headers, 'Authorization'
 						return config
 				
-			url = (opts) ->
-				"#{opts.authUrl}?#{$.param(_.pick(opts, 'client_id', 'scope', 'response_type'))}"
-				
-			$delegate.prompt = (opts) ->
-					template = """
-						<ion-modal-view>
-							<ion-content>
-								<iframe src='#{url(opts)}'>
-								</iframe>
-							</ion-content>
-						</ion-modal-view>
-					"""
-					$rootScope.loginModal = $ionicModal.fromTemplate template
-					$rootScope.loginModal.show() 
+			# prompt popup dialog for user to login
+			$delegate.prompt = (url) ->
+				template = """
+					<ion-modal-view>
+						<ion-content>
+							<iframe src='#{url}'>
+							</iframe>
+						</ion-content>
+					</ion-modal-view>
+				"""
+				$rootScope.loginModal = $ionicModal.fromTemplate template
+				$rootScope.loginModal.show() 
 			
+			# close the popup dialog once token available
 			$delegate.close = ->
 				$rootScope.loginModal.remove()
 				
-			check = (url) ->
+			# check url to determine if token is available
+			$delegate.check = (url) ->
 				if url.match(/error|access_token/)
 					path = new URL(url)
 					data = $.deparam /(?:[#\/]*)(.*)/.exec(path.hash)[1]	# remove leading / or #
@@ -53,20 +53,23 @@ angular.module 'util.auth', ['ionic', 'http-auth-interceptor']
 						$delegate.loginConfirmed data
 						
 			window.addEventListener 'message', (event) ->
-				check event.data
+				$delegate.check event.data
 			
 			$delegate.login = (opts) ->
 				isUnderLogin = false
 			
+				url = (opts) ->
+					"#{opts.authUrl}?#{$.param(_.pick(opts, 'client_id', 'scope', 'response_type'))}"
+			
 				$rootScope.$on 'event:auth-forbidden', ->
 					if not isUnderLogin
 						isUnderLogin = true 
-						$delegate.prompt(opts)
+						$delegate.prompt(url(opts))
 						
 				$rootScope.$on 'event:auth-loginRequired', ->
 					if not isUnderLogin
 						isUnderLogin = true 
-						$delegate.prompt(opts)
+						$delegate.prompt(url(opts))
 					
 				$rootScope.$on 'event:auth-loginConfirmed', ->
 					isUnderLogin = false

@@ -27,11 +27,6 @@ Define oauth2 server settings
 				client_id:		'util.auth'
 ```
 
-Include required packages as shown in test/io.coffee or test/rest.coffee
-```
-	require 'util.auth'
-```
-
 Include sails.io.js and disable autoConnect
 
 ```
@@ -41,9 +36,20 @@ Include sails.io.js and disable autoConnect
 	</script>
 ```
 
-Run login via the pre-defined oauth2 server settings once 401 Unauthorized Access is received 
+1. Prompt login by iframe popup via the pre-defined oauth2 server settings once 401 Unauthorized Access is received 
 ```
+require 'util.auth'
+
 angular.module 'app', ['util.auth', ...]
+	.run (authService) ->
+		authService.login env.oauth2.opts
+```
+
+2. Prompt login by cordova inappbrowser via the pre-defined oauth2 server settings once 401 Unauthorized Access is received 
+```
+require 'util.auth/cordova.js'
+
+angular.module 'app', ['util.auth.cordova', ...]
 	.run (authService) ->
 		authService.login env.oauth2.opts
 ```
