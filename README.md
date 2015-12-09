@@ -44,7 +44,6 @@ angular.module 'app', ['util.auth', ...]
 	.run (authService) ->
 		authService.login env.oauth2.opts
 ```
-
 2. Prompt login by cordova inappbrowser via the pre-defined oauth2 server settings once 401 Unauthorized Access is received 
 ```
 require 'util.auth/cordova.js'
