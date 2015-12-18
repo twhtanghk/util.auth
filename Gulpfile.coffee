@@ -7,7 +7,7 @@ gutil = require 'gulp-util'
 gulp.task 'default', ['test']
 
 gulp.task 'coffee', ->
-	gulp.src('./*.coffee')
+	gulp.src(['./index.coffee', './cordova.coffee'])
 	  	.pipe(coffee({bare: true}).on('error', gutil.log))
 	    .pipe(gulp.dest('./'))
 
