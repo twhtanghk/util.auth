@@ -1,11 +1,6 @@
 $ = require 'jquery'
 $.deparam = require 'jquery-deparam'
 _ = require 'lodash'
-require 'angular'
-require 'angular-animate'
-require 'angular-sanitize'
-require 'angular-ui-router'
-require 'ionic'
 require 'sails-auth'
 
 angular.module 'util.auth', ['ionic', 'http-auth-interceptor']
