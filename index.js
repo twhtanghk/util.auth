@@ -1,4 +1,4 @@
-var $, _;
+var $, URL, _;
 
 $ = require('jquery');
 
@@ -7,6 +7,8 @@ $.deparam = require('jquery-deparam');
 _ = require('lodash');
 
 require('sails-auth');
+
+URL = require('url');
 
 angular.module('util.auth', ['ionic', 'http-auth-interceptor']).config(function($provide) {
   return $provide.decorator('authService', function($delegate, $http, $sailsSocket, $rootScope, $ionicModal) {
@@ -34,7 +36,7 @@ angular.module('util.auth', ['ionic', 'http-auth-interceptor']).config(function(
     $delegate.check = function(url) {
       var data, err, path;
       if (url.match(/error|access_token/)) {
-        path = new URL(url);
+        path = URL.parse(url);
         data = $.deparam(/(?:[#\/]*)(.*)/.exec(path.hash)[1]);
         err = $.deparam(/\?*(.*)/.exec(path.search)[1]);
         if (err.error) {

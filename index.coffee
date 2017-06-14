@@ -2,6 +2,7 @@ $ = require 'jquery'
 $.deparam = require 'jquery-deparam'
 _ = require 'lodash'
 require 'sails-auth'
+URL = require 'url'
 
 angular.module 'util.auth', ['ionic', 'http-auth-interceptor']
 
@@ -37,7 +38,7 @@ angular.module 'util.auth', ['ionic', 'http-auth-interceptor']
 			# check url to determine if token is available
 			$delegate.check = (url) ->
 				if url.match(/error|access_token/)
-					path = new URL(url)
+					path = URL.parse url
 					data = $.deparam /(?:[#\/]*)(.*)/.exec(path.hash)[1]	# remove leading / or #
 					err = $.deparam /\?*(.*)/.exec(path.search)[1]			# remove leading ?
 					if err.error

@@ -1,6 +1,6 @@
 {
   "name": "util.auth",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -31,5 +31,9 @@
     "lodash": "^3.10.1",
     "request": "^2.67.0",
     "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "angularsails": "^0.11.3",
+    "bluebird": "^3.5.0"
   }
 }
